@@ -35,12 +35,17 @@ public:
 	//returns 1: item larger than maxmem
 	int set(key_type key, val_type val, index_type size)
 	{
+		try{
 			std::cout << key;
 			std::string skey = key;
 			const std::string *sval = static_cast<const std::string*>(val);
 			std::string data = "/key/" + skey + "/" + *sval;
 			std::cout << data << "\n";
 			net->put_http(data.c_str());
+			return 0;
+		} catch(...) {
+			return 1;
+		}
 	}
 	
 	//returns ptr: successful get
@@ -76,7 +81,10 @@ public:
 	index_type space_used() const
 	{
 		std::string st = "/memsize";
-		//net.get_http(st.c_str());
+		auto ct = net->get_http(st.c_str());
+		std::ostringstream os;
+		os << ct;
+		return os.c_str();
 	}
 };
 
