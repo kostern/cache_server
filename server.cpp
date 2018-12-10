@@ -32,7 +32,6 @@ int main(int argc, char *argv[])
         uint32_t sz = 0;
 	Cache::val_type ptr = cache->get(s, sz); 
         std::string str(static_cast<const char*>(ptr), sz);
-        crow::logger(str, crow::LogLevel::Debug);
         std::ostringstream os;
         os << str << "\n";
         return crow::response(os.str());
@@ -53,8 +52,8 @@ int main(int argc, char *argv[])
         return "Deleted\n";
     });
     
-    CROW_ROUTE(app, "/key/<string>").methods("HEAD"_method)
-    ([](Cache::key_type key){
+    CROW_ROUTE(app, "/").methods("HEAD"_method)
+    ([](){
         std::string vers = "Server: NoahServ0.1 (Unix)\n";
 
         time_t rawtime;
@@ -79,6 +78,5 @@ int main(int argc, char *argv[])
         return crow::response(200);	
     });
 
-    app.loglevel(crow::LogLevel::DEBUG);
     app.port(port).run();
 }
